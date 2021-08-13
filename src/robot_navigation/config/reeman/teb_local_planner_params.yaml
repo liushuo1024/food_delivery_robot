@@ -1,0 +1,117 @@
+#ns : TebLocalPlannerROS:
+
+ odom_topic: odom
+
+ ## Costmap converter plugin   
+ #costmap_converter_plugin: "costmap_converter::CostmapToPolygonsDBSMCCH"
+ costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSRANSAC"
+ #costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSMCCH"
+ #costmap_converter_plugin: "costmap_converter::CostmapToPolygonsDBSConcaveHull"
+ costmap_converter_spin_thread: True
+ costmap_converter_rate: 5
+
+
+ ## Configure plugins (namespace move_base/costmap_to_lines or move_base/costmap_to_polygons)
+ ## costmap_converter/CostmapToLinesDBSRANSAC, costmap_converter/CostmapToLinesDBSMCCH, costmap_converter/CostmapToPolygonsDBSMCCH
+ costmap_converter/CostmapToLinesDBSRANSAC:
+   cluster_max_distance: 0.4
+   cluster_min_pts: 2
+   ransac_inlier_distance: 0.15
+   ransac_min_inliers: 10
+   ransac_no_iterations: 1500
+   ransac_remainig_outliers: 3
+   ransac_convert_outlier_pts: True
+   ransac_filter_remaining_outlier_pts: False
+   convex_hull_min_pt_separation: 0.1
+
+    
+ # Trajectory
+  
+ teb_autosize: True
+ dt_ref: 0.3
+ dt_hysteresis: 0.1
+ ## global_plan_viapoint_sep: 0.3           # add by kaka
+ global_plan_overwrite_orientation: True  #False
+ allow_init_with_backwards_motion: False
+ max_global_plan_lookahead_dist: 3.0     #3.0 kaka
+ feasibility_check_no_poses: 5         #5 kaka
+ ## global_plan_via_point_sep: 0.5         # comment by kaka 2019 05 17
+ oscillation_filter_duration: 2.0        # add by kaka
+ oscillation_recovery_min_duration: 10.0 # add by kaka
+ weight_prefer_rotdir: 2                 # add by kaka
+ weight_inflation: 2.0                   # add by kaka
+ exact_arc_length: true                  # add by kaka - 2019 05 17
+    
+ # Robot
+         
+ max_vel_x: 0.60 #0.4
+ max_vel_x_backwards: 0.11
+ max_vel_y: 0.0
+ max_vel_theta: 0.6                      # fyl ^_^
+ acc_lim_x: 0.35
+ acc_lim_y: 0       #kaka add
+ acc_lim_theta: 0.2 #kaka 0.5            # fyl ^_^
+ min_turning_radius: 0.0 # diff-drive robot (can turn on place!)
+ shrink_horizon_min_duration: 3.0  #add by kaka
+ footprint_model:
+   type: "line"
+   line_start: [0.38, 0]
+   line_end: [-0.38, 0]
+
+ # GoalTolerance
+    
+ xy_goal_tolerance: 0.08
+ yaw_goal_tolerance: 0.07
+ free_goal_vel: False
+    
+ # Obstacles
+    
+ # min_obstacle_dist: 0.31 # This value must also include our robot radius, since footprint_model is set to "point".
+ include_costmap_obstacles: True
+ costmap_obstacles_behind_robot_dist: 1.0 #1.5 kaka
+ obstacle_poses_affected: 30
+ costmap_converter_plugin: ""
+ costmap_converter_spin_thread: True
+ costmap_converter_rate: 2 # origin 5
+ inflation_dist: 0.6
+
+ # Optimization
+    
+ no_inner_iterations: 5
+ no_outer_iterations: 4
+ optimization_activate: True
+ optimization_verbose: False
+ penalty_epsilon: 0.1
+ obstacle_penalty_epsilon: 0.1 #add by kaka
+ weight_max_vel_x: 2
+ weight_max_vel_theta: 1
+ weight_acc_lim_x: 1
+ weight_acc_lim_theta: 1
+ weight_kinematics_nh: 1200 #1000 kaka
+ weight_kinematics_forward_drive: 1000 #1000 1-17
+ weight_kinematics_turning_radius: 1
+ weight_optimaltime: 1
+ weight_obstacle: 50
+ weight_dynamic_obstacle: 10 # not in use yet
+ weight_adapt_factor: 2
+
+ # weight_viapoint: 1.0 #kaka
+ # viapoints_all_candidates: True 
+
+ # Homotopy Class Planner
+
+ enable_homotopy_class_planning: False  #True kaka
+ enable_multithreading: True #True
+ simple_exploration: False
+ max_number_classes: 4 #4 kaka
+ selection_cost_hysteresis: 1.0
+ selection_obst_cost_scale: 1.0
+ selection_alternative_time_cost: False
+ 
+ roadmap_graph_no_samples: 15 #15 kaka
+ roadmap_graph_area_width: 5 #5 kaka
+ h_signature_prescaler: 0.5
+ h_signature_threshold: 0.1
+ obstacle_keypoint_offset: 0.1
+ obstacle_heading_threshold: 0.45
+ visualize_hc_graph: False

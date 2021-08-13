@@ -1,0 +1,15 @@
+<launch>
+<node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+    <remap from="image" to="/camera/depth/image_raw"/>
+    <remap from="camera_info" to="/camera/depth/camera_info"/>
+    <remap from="scan" to="/camera_scan"/>
+
+    <param name="scan_height" value="470"/>
+    <param name="output_frame_id" value="camera_depth_frame"/>
+    <param name="range_min" type="double" value="0.2"/>
+    <param name="range_max" type="double" value="15"/>
+</node>
+<!-- 转换节点-->
+<node pkg="opencv_test" type="my_ros" name="my_ros"/>
+
+</launch>

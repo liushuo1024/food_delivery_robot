@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source ~/food_delivery_robot/devel/setup.bash
+roscd robot_navigation/map
+if [$#==1]
+then
+   rosrun map_server map_saver -f $1
+   echo 123
+else
+   echo 456
+   rosrun map_server map_saver -f map
+fi
+exit

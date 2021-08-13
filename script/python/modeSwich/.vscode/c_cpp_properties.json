@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/liushuo/food_delivery_robot/devel/include/**",
+        "/opt/ros/kinetic/include/**",
+        "/home/liushuo/food_delivery_robot/src/depth_image_deal/include/**",
+        "/home/liushuo/food_delivery_robot/src/depthimage_to_laserscan/include/**",
+        "/home/liushuo/food_delivery_robot/src/laser_filters/include/**",
+        "/home/liushuo/food_delivery_robot/src/pcl_test/include/**",
+        "/home/liushuo/food_delivery_robot/src/robot_bringup/include/**",
+        "/home/liushuo/food_delivery_robot/src/robot_navigation/include/**",
+        "/home/liushuo/food_delivery_robot/src/scan_filter/include/**",
+        "/home/liushuo/food_delivery_robot/src/ROS-WT931/wt931/include/**",
+        "/home/liushuo/food_delivery_robot/src/yocs_velocity_smoother/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

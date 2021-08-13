@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>切换运行模式</h1>
+
+<button type="button" onclick="buildMap()">启动建图模式</button>
+<button type="button" onclick="navigation()">回到导航模式</button>
+<p>点击按钮切换运行模式</p>
+
+<p id="demo"></p>
+
+<script>
+function buildMap() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "http://127.0.0.1:5000/buildMap", true);
+  xhttp.send();
+}
+
+function navigation() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "http://127.0.0.1:5000/navigation", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>

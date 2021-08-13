@@ -1,0 +1,18 @@
+<launch>
+   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/move_base_params.yaml" command="load" />
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find robot_navigation)/config/depth_image_dwa/dwa_local_planner_params.yaml" command="load" />
+ </node>
+    <node pkg="depth_image_deal" type="space_filter" name="space_filter"/>
+    <include file="$(find depthimage_to_laserscan)/launch/filter.launch"/>
+    <node pkg="scan_filter" type="listener" name="scan_filter"/>
+    <include file="$(find robot_bringup)/launch/start_robot_move.launch"/>
+    <include file="$(find depthimage_to_laserscan)/launch/space_filter.launch"/>
+    <include file="$(find robot_navigation)/launch/map_amcl.launch"/>
+
+</launch> 

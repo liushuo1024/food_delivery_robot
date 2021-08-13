@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ~/realsense_ws/
+source ~/realsense_ws/devel/setup.bash
+roslaunch realsense2_camera rs_camera.launch
