@@ -4,7 +4,6 @@
     <!-- 深度图转雷达 -->
     <!-- <include file="$(find depthimage_to_laserscan)/launch/filter.launch"/> -->
      <!-- 加载地图和AMCL定位 -->
-    <include file="$(find laser_filters)/launch/box_filter.launch"/>
     <include file="$(find robot_navigation)/launch/map_amcl.launch"/>
     
     <!-- web gui -->

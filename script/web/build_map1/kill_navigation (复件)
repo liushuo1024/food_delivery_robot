@@ -15,5 +15,7 @@ rosnode kill rosbridge_websocket
 rosnode kill rosout
 rosnode kill rplidarNode
 rosnode kill tf2_web_republisher
+rosnode kill velocity_smoother
+rosnode kill nodelet_manager
 killall ros_launch
 killall rosmaster

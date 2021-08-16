@@ -1,11 +1,15 @@
 <launch>
     <!-- 启动雷达 -->
-    <include file="$(find rplidar_ros)/launch/rplidar.launch" /> 
+    <include file="$(find rplidar_ros)/launch/rplidar.launch" />
+        <include file="$(find laser_filters)/launch/box_filter.launch"/> 
     <!-- 加载机器人模型参数 -->
     <node name="foot2base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 1 /base_footprint /base_link 50"/> 
-    <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0.20 0 0.01 0 0 1 0 /base_link /laser 50"/>
-    <node name="base2camera" pkg="tf" type="static_transform_publisher" args="0.13 0 0 0 0 0 1 /base_link /camera_link 50"/>
-    <node name="robot_bringup" pkg="robot_bringup" type="robot_bringup"/>
+    <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0.18 0 0.01 0 0 1 0 /base_link /laser 50"/>
+    <node name="base2camera" pkg="tf" type="static_transform_publisher" args="0.11 0 0 0 0 0 1 /base_link /camera_link 50"/>
+    <include file="$(find yocs_velocity_smoother)/launch/my_cmd.launch" />
+    <node name="robot_bringup" pkg="robot_bringup" type="robot_bringup">
+        <remap from="cmd_vel" to="xl_cmd_vel"/>
+    </node>
     <!-- 启动IMU -->
     <node pkg="wt931" type="main_cpp" name="main_cpp">
         <param name="serialport_name" value="/dev/imu" type="string"/>

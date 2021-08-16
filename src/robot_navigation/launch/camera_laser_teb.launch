@@ -1,32 +1,35 @@
 <launch>
+    <!-- 设置地图的配置文件 -->
+    <arg name="global_map" default="map.yaml" />
    <!-- 启动底盘，包括雷达、底盘、IMU、卡尔曼滤波定位 -->
    <include file="$(find robot_bringup)/launch/robot_bringup.launch"/>
-   <!-- 加载地图和AMCL定位 -->
-    <include file="$(find laser_filters)/launch/box_filter.launch"/>
-    <include file="$(find robot_navigation)/launch/map_amcl.launch"/>
+    <!-- 深度图相机 -->
+    <include file="$(find astra_camera)/launch/DabaiPro.launch"/>
+    <include file="$(find depthimage_to_laserscan)/launch/my2laser.launch"/>
+     <!-- 加载地图和AMCL定位 -->
+    <include file="$(find robot_navigation)/launch/map_amcl.launch">
+        <remap from="map" to="$(arg global_map)"/>
+    </include>
     
     <!-- web gui -->
    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
    <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>
-   
-    <!-- 深度图转点云 -->
-    <node pkg="depth_image_deal" type="image2point" name="image2point"/>
-
    <!-- 运行move_base节点 -->
-   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-      <rosparam file="$(find robot_navigation)/config/camera_laser_teb/costmap_common_params.yaml" command="load" ns="global_costmap" />
-      <rosparam file="$(find robot_navigation)/config/camera_laser_teb/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find robot_navigation)/config/camera_laser_teb/local_costmap_params.yaml" command="load" />
-      <rosparam file="$(find robot_navigation)/config/camera_laser_teb/global_costmap_params.yaml" command="load" />
-      <rosparam file="$(find robot_navigation)/config/camera_laser_teb/teb_local_planner_params.yaml" command="load" />
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	  	<rosparam file="$(find robot_navigation)/config/laser_teb/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	 	<rosparam file="$(find robot_navigation)/config/laser_teb/costmap_common_params.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find robot_navigation)/config/laser_teb/costmap_converter_params.yaml" command="load" />
+      <rosparam file="$(find robot_navigation)/config/laser_teb/local_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find robot_navigation)/config/laser_teb/global_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find robot_navigation)/config/laser_teb/teb_local_planner_params.yaml" command="load" />
 
-      <param name="base_global_planner" value="global_planner/GlobalPlanner" />
-      <param name="planner_frequency" value="1.0" />
-      <param name="planner_patience" value="5.0" />
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />
 
-      <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-      <param name="controller_frequency" value="5.0" />
-      <param name="controller_patience" value="15.0" />
+		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+		<param name="controller_frequency" value="5.0" />
+		<param name="controller_patience" value="15.0" />
 	</node>
     <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_navigation)/rviz/costmap.rviz" /> -->
 </launch> 

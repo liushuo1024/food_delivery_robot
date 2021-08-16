@@ -1,15 +1,11 @@
 <launch>
     <!-- 设置地图的配置文件 -->
     <arg name="global_map" default="map.yaml" />
-
-
-
    <!-- 启动底盘，包括雷达、底盘、IMU、卡尔曼滤波定位 -->
    <include file="$(find robot_bringup)/launch/robot_bringup.launch"/>
     <!-- 深度图转雷达 -->
     <!-- <include file="$(find depthimage_to_laserscan)/launch/filter.launch"/> -->
      <!-- 加载地图和AMCL定位 -->
-    <include file="$(find laser_filters)/launch/box_filter.launch"/>
     <include file="$(find robot_navigation)/launch/map_amcl.launch">
         <remap from="map" to="$(arg global_map)"/>
     </include>

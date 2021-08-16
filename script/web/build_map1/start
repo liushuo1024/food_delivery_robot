@@ -1,0 +1,20 @@
+#! /bin/bash
+
+move_base_Name=move_base
+move_baseNumber=`ps -ef |grep -w $move_base_Name|grep -v grep|wc -l`
+
+if [ $move_baseNumber -le 0 ];then
+   echo "gmapping can run"
+else
+   echo "need kill navigation"
+   bash /home/pc-01/food_delivery_robot/script/web/build_map/kill_navigation
+fi
+gmapping_Name=slam_gmapping
+gmappingNumber=`ps -ef |grep -w $gmapping_Name|grep -v grep|wc -l`
+if [ $gmappingNumber -le 0 ];then
+   echo "create_map"
+   bash /home/pc-01/food_delivery_robot/script/web/build_map/create_map
+else
+   echo "gmapping is  running.."
+fi
+exit

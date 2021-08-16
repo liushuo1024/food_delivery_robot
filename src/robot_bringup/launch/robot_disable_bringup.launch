@@ -5,8 +5,9 @@
     <node name="foot2base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 1 /base_footprint /base_link 50"/> 
     <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0.18 0 0.01 0 0 1 0 /base_link /laser 50"/>
     <node name="base2camera" pkg="tf" type="static_transform_publisher" args="0.13 0 0 0 0 0 1 /base_link /camera_link 50"/>
-    <node name="robot_bringup" pkg="robot_bringup" type="robot_bringup">
-        <remap from="cmd_vel" to="cmd_vel/output"/>
+    <include file="$(find yocs_velocity_smoother)/launch/my_cmd.launch" />
+    <node name="robot_bringup" pkg="robot_bringup" type="disable_bringup">
+        <remap from="cmd_vel" to="xl_cmd_vel"/>
     </node>
     <!-- 启动IMU -->
     <node pkg="wt931" type="main_cpp" name="main_cpp">

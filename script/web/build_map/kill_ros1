@@ -1,0 +1,25 @@
+#!/bin/bash
+rosnode kill rosbridge_websocket
+rosnode kill base2camera
+rosnode kill base2laser
+rosnode kill foot2base
+rosnode kill link_ros
+rosnode kill main_cpp
+rosnode kill robot_bringup
+rosnode kill robot_pose_ekf
+rosnode kill rosapi
+rosnode kill rosout
+rosnode kill rplidarNode
+rosnode kill slam_gmapping
+rosnode kill tf2_web_republisher
+rosnode kill amcl
+rosnode kill laser_filter
+rosnode kill map_server
+rosnode kill move_base
+rosnode kill velocity_smoother
+rosnode kill nodelet_manager
+killall ros_launch
+killall rosmaster
+
+
+

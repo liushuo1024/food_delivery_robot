@@ -2,5 +2,5 @@
 bash /home/pc-01/food_delivery_robot/script/web/rebuild_map/kill_ros
 source /opt/ros/kinetic/setup.bash
 source /home/pc-01/food_delivery_robot/devel/setup.bash
-roslaunch robot_navigation build_map.launch
-
+roslaunch gmapping build_map.launch
+exit

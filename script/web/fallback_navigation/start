@@ -14,7 +14,6 @@ move_baseNumber=`ps -ef |grep -w $move_base_Name|grep -v grep|wc -l`
 if [ $move_baseNumber -le 0 ];then
    echo "need turn on move_base"
    bash /home/pc-01/food_delivery_robot/script/web/fallback_navigation/navigation_start
-
 else
    echo "move_base is running"
 fi
