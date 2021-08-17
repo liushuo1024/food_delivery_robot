@@ -227,6 +227,8 @@ target_link_libraries(image_converter ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(space_filter src/space_filter.cpp)
 target_link_libraries(space_filter ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(image2point src/image2point.cpp)
+target_link_libraries(image2point ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # add_executable(hs_image_sub_node src/hs_image_sub_node.cpp)
 # target_link_libraries(hs_image_sub_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # add_dependencies(opencv_test_node opencv_test_gencpp)

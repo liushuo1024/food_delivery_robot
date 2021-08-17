@@ -1,9 +1,11 @@
-#include "space_filter.h"
+#include "rectify_depth_image.h"
+#include <sensor_msgs/CameraInfo.h>
 //(u-cx)point[2]/fx
 talker_listener::talker_listener(){
         num = 3;
-        sub = nh.subscribe("/camera/depth/image_rect_raw", 1, &talker_listener::Callback, this);
-        pub = nh.advertise<sensor_msgs::Image>("/camera/depth/image_raw", 100);
+        sub = nh.subscribe("/camera/depth/image", 1, &talker_listener::Callback, this);
+        camera_info = nh.subscribe("/camera/depth/camera_info", 1, &talker_listener::camera_info_CB, this);
+        pub = nh.advertise<sensor_msgs::Image>("/camera/depth/my_image_raw", 100);
     }
 //去除定高，单位毫米
 void talker_listener::space_filter(const Mat &src, Mat &out, float height_limit){
@@ -50,23 +52,6 @@ double talker_listener::P_z(double v){
   proportion_z=cos(Pitch_angle-atan(Tan_angle_y))/cos(atan(Tan_angle_y));
   return proportion_z;
 }
-//深度图按列进行中值滤波
-void talker_listener::MedianFlitering(const Mat &src, Mat &dst, int w, int s){
-	if (!src.data)return;
-	Mat _dst(src.size(), src.type());
-    for (int j=0; j < src.cols; j=j+1)
-	{
-        // cout<<"第"<<j<<"列"<<endl;
-		for (int i=0; i < src.rows; i=i+s) {
-            int n=i+1;
-            for (n; n < i+s; n=n+1) {
-               _dst.at<uint16_t>(n, j)=UINT16_MAX;
-            }
-            _dst.at<uint16_t>(i, j)=Median1(src,i,j,w);
-		}
-    }
-	_dst.copyTo(dst);//拷贝
-}
 uint16_t talker_listener::Median1(const Mat &src,int i,int j,int w) {
 	uint16_t arr[w];
     int w_radius=w/2;
@@ -86,7 +71,16 @@ uint16_t talker_listener::Median1(const Mat &src,int i,int j,int w) {
     std::sort(arr,arr+w);
 	return arr[w/2+1];//返回中值
 }
-
+void talker_listener::camera_info_CB(const sensor_msgs::CameraInfo& msg)
+{
+    // [474.16741943359375, 0.0,                317.7526550292969,
+    //  0.0,                474.16741943359375, 196.19100952148438,
+    //  0.0,                0.0,                1.0]
+    fx = msg.K[0];
+    fy = msg.K[4];
+    x0 = msg.K[2];
+    y0 = msg.K[5];
+}
 
 void talker_listener::Callback(const sensor_msgs::Image& msg)
 {
@@ -107,21 +101,13 @@ void talker_listener::Callback(const sensor_msgs::Image& msg)
     //深度矫正
     Mat rectify_image;
     modifyMat(space_filter_image,rectify_image);
-    Mat MedianFlitering_image;
-    MedianFlitering(rectify_image,MedianFlitering_image,10,1);
     //show frames
     cv_bridge::CvImage cvi;
-    int length;
-    length=sizeof(msg.data)/msg.step;  //数组占内存总空间，除以单个元素占内存空间大小
-    cvi.image = space_filter_image;
+    cvi.image = rectify_image;
+    cvi.encoding = msg.encoding;
+    cvi.header = msg.header;
     sensor_msgs::Image im;
     cvi.toImageMsg(im);
-    im.encoding=msg.encoding;
-    im.header=msg.header;
-    im.height=msg.height;
-    im.is_bigendian=msg.is_bigendian;
-    im.step=msg.step;
-    im.width=msg.width;
     pub.publish(im);
 }
 

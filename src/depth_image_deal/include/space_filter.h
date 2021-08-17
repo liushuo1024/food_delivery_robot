@@ -33,6 +33,7 @@ private:
     int num;
     ros::NodeHandle nh;
     ros::Subscriber sub;
+    ros::Subscriber camera_info;
     ros::Publisher pub;
 public:
     talker_listener();
@@ -43,6 +44,7 @@ public:
     void space_filter(const Mat &src, Mat &out, float height_limit);
     void modifyMat(const Mat &src, Mat &out);
     void Callback(const sensor_msgs::Image& msg);
+    void camera_info_CB(const sensor_msgs::CameraInfo& msg);
     uint16_t Median1(const Mat &src,int i,int j,int w); 
     void MedianFlitering(const Mat &src, Mat &dst,int w=9,int s=1);
 };
